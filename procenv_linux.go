@@ -9,8 +9,8 @@ import (
 	"strings"
 )
 
-// ProcEnv reads one environment variable from pid's /proc environ.
-func ProcEnv(pid int, key string) (string, bool) {
+// readProcEnv reads one environment variable from pid's /proc environ.
+func readProcEnv(pid int, key string) (string, bool) {
 	data, err := os.ReadFile("/proc/" + strconv.Itoa(pid) + "/environ")
 	if err != nil {
 		return "", false

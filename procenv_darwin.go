@@ -9,8 +9,8 @@ import (
 	"strings"
 )
 
-// ProcEnv reads one environment variable from pid via ps.
-func ProcEnv(pid int, key string) (string, bool) {
+// readProcEnv reads one environment variable from pid via ps.
+func readProcEnv(pid int, key string) (string, bool) {
 	out, err := exec.CommandContext(context.Background(), "ps", "eww", "-p", strconv.Itoa(pid)).CombinedOutput() //nolint:gosec // pid comes from caller process metadata
 	if err != nil {
 		return "", false
