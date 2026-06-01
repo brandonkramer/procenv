@@ -1,0 +1,26 @@
+//go:build linux
+
+package procenv
+
+import (
+	"bytes"
+	"os"
+	"strconv"
+	"strings"
+)
+
+// ProcEnv reads one environment variable from pid's /proc environ.
+func ProcEnv(pid int, key string) (string, bool) {
+	data, err := os.ReadFile("/proc/" + strconv.Itoa(pid) + "/environ")
+	if err != nil {
+		return "", false
+	}
+	prefix := key + "="
+	for _, part := range bytes.Split(data, []byte{0}) {
+		line := string(part)
+		if strings.HasPrefix(line, prefix) {
+			return strings.TrimPrefix(line, prefix), true
+		}
+	}
+	return "", false
+}
